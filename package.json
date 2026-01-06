@@ -1,0 +1,54 @@
+{
+  "name": "ts-function-similarity",
+  "version": "1.2.0",
+  "description": "Extract and compare TypeScript functions using Levenshtein distance - supports multiple directories and files",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ts-similarity": "dist/index.js",
+    "ts-similarity-mcp": "dist/mcp-server.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node --max-old-space-size=8192 dist/index.js",
+    "dev": "ts-node --max-old-space-size=8192 src/index.ts"
+  },
+  "keywords": [
+    "typescript",
+    "similarity",
+    "levenshtein",
+    "code-analysis",
+    "duplicate-detection",
+    "ast",
+    "refactoring",
+    "code-quality"
+  ],
+  "author": "Kivanc Bilen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kivancbilen/ts-function-similarity.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kivancbilen/ts-function-similarity/issues"
+  },
+  "homepage": "https://github.com/kivancbilen/ts-function-similarity#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@typescript-eslint/typescript-estree": "^6.0.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
