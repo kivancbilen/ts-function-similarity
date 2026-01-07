@@ -1,7 +1,7 @@
 {
   "name": "ts-function-similarity",
-  "version": "1.2.0",
-  "description": "Extract and compare TypeScript functions using Levenshtein distance - supports multiple directories and files",
+  "version": "1.3.0",
+  "description": "Ultra-fast TypeScript function similarity analyzer with 5-8x performance improvements - supports multiple directories and files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
