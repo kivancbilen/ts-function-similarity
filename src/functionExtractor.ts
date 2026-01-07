@@ -2,10 +2,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from '@typescript-eslint/typescript-estree';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import { normalizeCode } from './levenshtein.js';
 
 export interface ExtractedFunction {
   name: string;
   code: string;
+  normalizedCode: string;  // Phase 1.4: Pre-normalized code cached at extraction
   filePath: string;
   startLine: number;
   endLine: number;
@@ -137,6 +139,7 @@ export class FunctionExtractor {
     return {
       name,
       code,
+      normalizedCode: normalizeCode(code),  // Phase 1.4: Normalize once at extraction
       filePath,
       startLine,
       endLine,
