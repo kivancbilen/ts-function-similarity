@@ -148,15 +148,24 @@ async function main(): Promise<void> {
   }
 
   const totalComparisons = (filteredFunctionCount * (filteredFunctionCount - 1)) / 2;
-  console.log(`Comparing functions (${totalComparisons.toLocaleString()} comparisons)...`);
+  console.log(`Comparing functions (${totalComparisons.toLocaleString()} comparisons)...\n`);
 
   const comparator = new FunctionComparator();
 
-  let lastProgress = 0;
+  let lastProgress = -1;
+  const startTime = Date.now();
+
   const progressCallback = (current: number, total: number) => {
     const percent = Math.floor((current / total) * 100);
-    if (percent > lastProgress) {
-      process.stdout.write(`\rProgress: ${percent}% (${current.toLocaleString()}/${total.toLocaleString()})`);
+
+    // Report every 10% or at completion
+    if (percent >= lastProgress + 10 || percent === 100) {
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+      const rate = Math.round(current / (Date.now() - startTime) * 1000);
+      const progressBar = '█'.repeat(Math.floor(percent / 5)) + '░'.repeat(20 - Math.floor(percent / 5));
+
+      console.log(`[${progressBar}] ${percent}% - ${current.toLocaleString()}/${total.toLocaleString()} comparisons (${rate.toLocaleString()}/sec, ${elapsed}s elapsed)`);
+
       lastProgress = percent;
     }
   };
@@ -180,7 +189,9 @@ async function main(): Promise<void> {
     });
   }
 
-  console.log('\n'); // New line after progress
+  const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
+  const avgRate = Math.round(totalComparisons / (Date.now() - startTime) * 1000);
+  console.log(`\n✓ Completed in ${totalTime}s (avg ${avgRate.toLocaleString()} comparisons/sec)\n`);
 
   printResults(results, options.limit);
 }
@@ -188,7 +199,10 @@ async function main(): Promise<void> {
 // Export library API for programmatic use
 export { FunctionExtractor } from './functionExtractor.js';
 export { FunctionComparator } from './comparator.js';
-export { levenshteinDistance } from './levenshtein.js';
+export { FunctionComparatorParallel } from './comparatorParallel.js';
+export { levenshteinDistance, calculateSimilarity, calculateSimilarityWithThreshold } from './levenshtein.js';
+export type { ExtractedFunction } from './functionExtractor.js';
+export type { SimilarityResult, ComparisonOptions } from './comparator.js';
 
 // Run CLI when executed directly
 main().catch((error) => {
